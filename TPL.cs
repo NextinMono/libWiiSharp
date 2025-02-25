@@ -346,7 +346,25 @@ namespace libWiiSharp
             };
             return RgbaToImage(data, tplTextureHeaders[index].TextureWidth, tplTextureHeaders[index].TextureHeight);
         }
-
+        public byte[] ExtractTextureBytes(int index)
+        {
+            byte[] data = tplTextureHeaders[index].TextureFormat switch
+            {
+                0 => FromI4(textureData[index], tplTextureHeaders[index].TextureWidth, tplTextureHeaders[index].TextureHeight),
+                1 => FromI8(textureData[index], tplTextureHeaders[index].TextureWidth, tplTextureHeaders[index].TextureHeight),
+                2 => FromIA4(textureData[index], tplTextureHeaders[index].TextureWidth, tplTextureHeaders[index].TextureHeight),
+                3 => FromIA8(textureData[index], tplTextureHeaders[index].TextureWidth, tplTextureHeaders[index].TextureHeight),
+                4 => FromRGB565(textureData[index], tplTextureHeaders[index].TextureWidth, tplTextureHeaders[index].TextureHeight),
+                5 => FromRGB5A3(textureData[index], tplTextureHeaders[index].TextureWidth, tplTextureHeaders[index].TextureHeight),
+                6 => FromRGBA8(textureData[index], tplTextureHeaders[index].TextureWidth, tplTextureHeaders[index].TextureHeight),
+                8 => FromCI4(textureData[index], PaletteToRgba(index), tplTextureHeaders[index].TextureWidth, tplTextureHeaders[index].TextureHeight),
+                9 => FromCI8(textureData[index], PaletteToRgba(index), tplTextureHeaders[index].TextureWidth, tplTextureHeaders[index].TextureHeight),
+                10 => FromCI14X2(textureData[index], PaletteToRgba(index), tplTextureHeaders[index].TextureWidth, tplTextureHeaders[index].TextureHeight),
+                14 => FromCMP(textureData[index], tplTextureHeaders[index].TextureWidth, tplTextureHeaders[index].TextureHeight),
+                _ => throw new FormatException("Unsupported Texture Format!"),
+            };
+            return data;
+        }
         public void ExtractTexture(string savePath)
         {
             ExtractTexture(0, savePath);
