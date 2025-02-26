@@ -365,6 +365,12 @@ namespace libWiiSharp
             };
             return data;
         }
+
+        public TPL_TextureHeader GetTexture(int index)
+        {
+            
+            return tplTextureHeaders[index];
+        }
         public void ExtractTexture(string savePath)
         {
             ExtractTexture(0, savePath);
